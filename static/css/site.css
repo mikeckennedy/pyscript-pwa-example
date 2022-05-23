@@ -107,6 +107,7 @@ footer {
 
 
 a {
+    cursor: pointer;
     font-weight: bold;
     text-decoration: none;
 }
