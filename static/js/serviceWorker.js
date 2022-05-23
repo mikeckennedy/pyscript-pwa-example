@@ -1,6 +1,7 @@
 const staticPyPWA = "dev-pypwa-v4"
 const assets = [
-    "",
+    // "",
+    // "/",
     "/static/css/site.css",
     "/static/js/site.js",
     "/static/js/pwa-scaffold.js",
@@ -14,6 +15,7 @@ const assets = [
 
     "/static/images/weather/cloudy.png",
     "/static/images/weather/rain.png",
+    "/static/images/weather/offline.png",
     "/static/images/weather/sunny.png",
 
     "/static/pyodide/pyodide.js",

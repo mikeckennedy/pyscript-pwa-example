@@ -67,6 +67,10 @@ body.rain {
     background: #607280;
     color: white;
 }
+body.offline {
+    background: #e37f7f;
+    color: black;
+}
 
 #weather {
     margin-top: 100px;

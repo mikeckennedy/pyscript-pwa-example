@@ -1,7 +1,9 @@
 # noinspection PyUnresolvedReferences
+import random
+
 import pyodide
 # noinspection PyUnresolvedReferences
-from js import DOMParser, document, setInterval
+from js import DOMParser, document, setInterval, console
 
 # noinspection PyPackages
 import weather_api
@@ -25,7 +27,14 @@ def set_weather():
     add_class(div_weather, 'hidden')
     clear_body_colors(body)
 
-    forecast: Report = weather_api.download_report()
+    try:
+        forecast: Report = weather_api.download_report()
+    except Exception as x:
+        console.log("Error calling weather API: {}".format(x))
+        forecast = Report()
+        forecast.sky = 'offline'
+        forecast.temp = 0
+        forecast.report_summary = 'Weather API is offline.' + " id " + str(random.randint(1, 100))
 
     add_class(body, forecast.sky)
     div_forecast.innerText = forecast.report_summary
@@ -39,6 +48,7 @@ def clear_body_colors(body):
     remove_class(body, 'cloudy')
     remove_class(body, 'sunny')
     remove_class(body, 'rain')
+    remove_class(body, 'error')
 
 
 def add_refresh_event():
