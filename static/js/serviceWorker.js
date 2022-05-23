@@ -16,6 +16,7 @@ const assets = [
     "/static/images/weather/rain.png",
     "/static/images/weather/sunny.png",
 
+    "/static/pyodide/pyodide.js",
     "/static/pyodide/packages.json",
     "/static/pyodide/pyodide_py.tar",
     "/static/pyodide/pyodide.asm.js",
@@ -25,6 +26,8 @@ const assets = [
     "/static/pyodide/pyparsing-3.0.7-py3-none-any.whl",
     "/static/pyodide/packaging-21.3-py3-none-any.whl",
     "/static/pyodide/distutils.tar",
+
+    "/static/images/icons/icon-144x144.png",
 ]
 
 self.addEventListener("install", installEvent => {

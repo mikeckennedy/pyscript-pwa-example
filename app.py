@@ -1,4 +1,3 @@
-import json
 import random
 from pathlib import Path
 
@@ -10,11 +9,6 @@ app = flask.Flask(__name__)
 @app.get('/')
 def index():
     return flask.render_template('index.html')
-
-
-# @app.get('/weather')
-# def weather():
-#     return flask.render_template('weather.html')
 
 
 @app.get('/weather/data')
