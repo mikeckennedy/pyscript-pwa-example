@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fdfdfd;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    overflow: hidden;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 0.5rem;
+    text-align: center;
+    height: 80%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+}
+
+li {
+    margin-right: 1rem;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+}
+
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 1rem 0;
+}
+
+
+body.sunny {
+    background: #69caf8;
+}
+
+body.cloudy {
+    background: #cbcaca;
+}
+
+body.rain {
+    background: #607280;
+    color: white;
+}
+
+#weather {
+    margin-top: 100px;
+}
+
+#weather #image-container {
+    float: left;
+}
+
+#weather #image {
+    width: 350px;
+}
+
+#weather #temp {
+    padding-top: 70px;
+    font-size: 100px;
+    font-weight: bold;
+}
+
+#weather #forecast {
+
+}
+
+footer {
+    text-align: center;
+    height: 20%;
+    background-color: #444;
+    color: #aaa;
+}
+
+.footer-content {
+    padding-top: 40px;
+}
+
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
