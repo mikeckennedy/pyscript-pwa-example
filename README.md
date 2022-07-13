@@ -27,7 +27,7 @@ If you have improvements for the PWA side of things, please open a PR. It's very
 
 # Smartmirror display
 
-This app has been exstened with the purpose to run on a smart mirror display. 
+This app has been extended with the purpose to run on a smart mirror display. 
 
 ## Current features
 - Display time
