@@ -1,5 +1,7 @@
 # pyscript PWA Example
 
+OLD README
+
 This app shows how using a PWA (Progressive Web App) along with [pyscript](https://pyscript.net)
 allows us to create Python-based web applications that install like regular applications and
 (mostly) don't suffer from the large file downloads needed for Python's WebAssembly runtime.
