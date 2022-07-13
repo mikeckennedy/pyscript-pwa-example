@@ -11,7 +11,7 @@ To run the app, just start it as a Flask application (keep the app running for t
 ```bash
 
 python3 -m venv venv
-. /venv/bin/activate
+source ./venv/bin/activate
 pip install -r requirements.txt
 flask run
 
@@ -35,8 +35,11 @@ This app has been extended with the purpose to run on a smart mirror display.
     - Color theame based on weather conditions
     - Real time weather (From SMHI (Sveriges meteorologiska och hydrologiska institut))
     - Caching weather data
+- Refresh button
 
 ## Comming features
+- Display time
+    - Autoupdate the time
 - Weather app
     - Position (Lon Lat) detection
 - Calendar app

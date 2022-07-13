@@ -3,9 +3,13 @@ from pathlib import Path
 # Third party imports 
 import flask
 # Local imports 
-from static.python.smhi import get_smhi_forecast_data
+from static.python.weather_backend_api import WeatherBackendAPI
 
 app = flask.Flask(__name__)
+print('Before ws backend')
+ws_backend = WeatherBackendAPI.setup()
+print('After ws backend')
+print(ws_backend.provider.provider_name)
 
 @app.get('/')
 def index():
@@ -13,12 +17,12 @@ def index():
 
 @app.get('/weather/data')
 def weather_data():
-    data = get_smhi_forecast_data()
+    data = ws_backend.get_forecast_data()
     return flask.jsonify(data)
 
 @app.get('/weather/data/<forecast_day>')
 def weather_data_weekday(forecast_day):
-    data = get_smhi_forecast_data(int(forecast_day))
+    data = ws_backend.get_forecast_data(int(forecast_day))
     return flask.jsonify(data)
 
 @app.get('/serviceWorker.js')

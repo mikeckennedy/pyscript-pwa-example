@@ -1,99 +1,74 @@
-from pathlib import Path
+# Standard libraries
 import json
 import requests
 from datetime import datetime, timedelta
-from os import listdir
+# Local imports
+from static.python.provider import ForecastData
 
 # Lon lat for Molndal
-request_url = 'https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/12.013/lat/57.656/data.json'
-cache_file_path = './static/cache/smhi_data.json'
 
-def get_report_phrase(sky: str):
-    report_phrase = {
-        'sunny': 'Clear skies and a beautiful day.',
-        'cloudy': 'Cloudy skies with a chance of rain.',
-        'rain': 'It will be a rainy day, bring an unbrella.',
-    }
-    return report_phrase[sky]
+class SHMIProvider:
+    def __init__(self, provider_name: str, request_url: str, cache_file_path: str):
+        self.provider_name = provider_name
+        self.request_url = request_url
+        self.cache_file_path = cache_file_path
 
-def get_weather_from_data(rain: float):
-    sky = 'sunny' if rain < 1 else 'cloudy'
-    sky = 'rain' if rain >= 3 else sky
-    return sky
+    # Local caching
+    def write_cache(self):
+        with open(self.cache_file_path, 'w') as f:
+            data = requests.get(self.request_url)
+            json.dump(data.json(), f) 
 
-def parse_smhi_data_from_json(json_data: dict, day: int):
-    approved_time = json_data['approvedTime']
-    todays_date = datetime.fromisoformat(approved_time[:-1])
-    parsed_data = {
-        'date': '',
-        'temp': [],
-        'rain': []
-    }
-    for t in json_data['timeSeries']:
-        forecast_date = datetime.fromisoformat(t['validTime'][:-1]).date()
-        if forecast_date == (todays_date + timedelta(days=day)).date():
-            for param in t['parameters']:
-                if param['name'] == 't':
-                    temp = param['values'][0]
-                    parsed_data['temp'].append(temp)
-                if param['name'] == 'pmean':
-                    # pmean, Mean precipitation intensity, mm/h
-                    rain = param['values'][0]
-                    parsed_data['rain'].append(rain)
-    try:
-        parsed_data = {
-            'date': (todays_date + timedelta(days=day)),
-            'temp': sum(parsed_data['temp'])/len(parsed_data['temp']),
-            'rain': sum(parsed_data['rain'])
-        }
-    except Exception as e:
-        print('parse_smhi_data_from_json')
-        print(e)
-    return parsed_data
-
-def write_cache():
-    with open(cache_file_path, 'w') as f:
-        data = requests.get(request_url)
-        json.dump(data.json(), f) 
-
-def read_cache():
-    with open(cache_file_path, 'r') as f:
-        data = json.load(f)
-    return data
-
-def update_cache():
-    try: 
-        with open(cache_file_path, 'r') as f:
+    def read_cache(self):
+        with open(self.cache_file_path, 'r') as f:
             data = json.load(f)
-            approved_date = datetime.fromisoformat(data['approvedTime'][:-1]).date()
-            current_date = datetime.now().date()
-        if current_date != approved_date:
-            write_cache()
-    except Exception as e:
-        print(f'update_cache error: {e}')
-        write_cache()
+        return data
 
-def get_smhi_forecast_data(day: int = 0):
-    # TODO: Add timer so that i take the correct daylie forecast.
-    # (Maybe download the forecast every night at 00:00?) 
-    # TODO: Add geotag for dynamical lon lat updates
-    # TODO: Figure out a better way of updating the cache
-    update_cache()
-    smhi_data = read_cache()
-    parsed_data = parse_smhi_data_from_json(smhi_data, day=day)
-    sky = get_weather_from_data(parsed_data['rain']) 
-    data = {
-        'date': parsed_data['date'],
-        'sky': sky,
-        'temp': parsed_data['temp'],
-        'rain': round(parsed_data['rain'], 2),
-        'report': get_report_phrase(sky),
-    }
-    # data = {
-    #     'date': datetime.now().date(),
-    #     'sky': 'rain',
-    #     'temp': 21,
-    #     'rain': 3,
-    #     'report': get_report_phrase('rain'),
-    # } 
-    return data
+    def update_cache(self):
+        try: 
+            with open(self.cache_file_path, 'r') as f:
+                data = json.load(f)
+                approved_date = datetime.fromisoformat(data['approvedTime'][:-1]).date()
+                current_date = datetime.now().date()
+            if current_date != approved_date:
+                self.write_cache()
+        except FileNotFoundError as e:
+            print(f'update_cache error: {e}')
+            self.write_cache()
+
+    # Parsing data from SMHI
+    def parse_data_from_request(self, json_data: dict, day: int):
+        approved_time = json_data['approvedTime']
+        todays_date = datetime.fromisoformat(approved_time[:-1])
+        tempratures = []
+        accumulated_rain = []
+        for t in json_data['timeSeries']:
+            forecast_date = datetime.fromisoformat(t['validTime'][:-1]).date()
+            if forecast_date == (todays_date + timedelta(days=day)).date():
+                for param in t['parameters']:
+                    # SMHI specific parameter names, link to docs
+                    # https://opendata.smhi.se/apidocs/metfcst/parameters.html
+                    if param['name'] == 't':
+                        temp = param['values'][0]
+                        tempratures.append(temp)
+                    if param['name'] == 'pmean':
+                        # pmean, Mean precipitation intensity, mm/h
+                        rain = param['values'][0]
+                        accumulated_rain.append(rain)
+        try:
+            parsed_data = {
+                'date': (todays_date + timedelta(days=day)),
+                'temperature_in_c': sum(tempratures)/len(tempratures),
+                'rain_in_mm': sum(accumulated_rain)
+            }
+        except Exception as e:
+            print('parse_smhi_data_from_json')
+            print(e)
+        return parsed_data
+
+    # Returing ForecastData dataclass accordning to WeatherProviderProtocal
+    def get_forecast_data(self, day: int) -> ForecastData:
+        self.update_cache()
+        smhi_data = self.read_cache()
+        parsed_data = self.parse_data_from_request(smhi_data, day=day)
+        return ForecastData(**parsed_data)

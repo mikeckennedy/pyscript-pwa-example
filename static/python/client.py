@@ -6,39 +6,40 @@ import pyodide
 from js import DOMParser, document, setInterval, console
 
 # noinspection PyPackages
-import weather_api
-
-# noinspection PyPackages
-from weather_api import Report
+import weather_frontend_api 
+from weather_report import WeatherReport
 
 
 def main():
-    setInterval(view_clock(), 60_000)
+    print('before clock')
+    view_clock()
+    print('before weather')
     set_all_weather()
+    print('before refresh event')
     add_refresh_event()
+
 
 def set_all_weather():
     set_main_weather()
     for forecast_day in range(1,7):
         set_span_weather(forecast_day) 
 
+
 def view_clock():
     body = document.getElementById('the_body')
     div_clock = document.getElementById('clock')
-    
     add_class(div_clock, 'hidden')
     clear_body_colors(body)
-
     div_clock.innerText = str(datetime.now().strftime("%H:%M"))
-
     remove_class(div_clock, 'hidden')
+
 
 def get_forecast(forecast_day: int = 0):
     try:
-        forecast: Report = weather_api.download_report(forecast_day)
+        forecast: WeatherReport = weather_frontend_api.download_report(forecast_day)
     except Exception as x:
         console.log("Error calling weather API: {}".format(x))
-        forecast = create_error_style_report()
+        forecast = create_error_style_WeatherReport()
     return forecast
 
 def set_span_weather(forecast_day: int):
@@ -57,8 +58,8 @@ def set_span_weather(forecast_day: int):
     add_class(body, forecast.sky)
     div_date.innerText = forecast.date[:-17]
     div_image.setAttribute('src', '/static/images/weather/{}.png'.format(forecast.sky))
-    div_temp.innerText = str(forecast.temp) + " °C"
-    div_rain.innerText = str(forecast.rain) + " mm"
+    div_temp.innerText = str(forecast.temperature_in_c) + " °C"
+    div_rain.innerText = str(forecast.rain_in_mm) + " mm"
     div_forecast.innerText = forecast.report_summary
 
     remove_class(div_weather, 'hidden')
@@ -76,22 +77,20 @@ def set_main_weather():
     clear_body_colors(body)
 
     forecast = get_forecast()
-
     add_class(body, forecast.sky)
     # TODO: Figure out werid crash when i try to convert to date here
     div_date.innerText = forecast.date[:-12]
     div_image.setAttribute('src', '/static/images/weather/{}.png'.format(forecast.sky))
-    div_temp.innerText = str(forecast.temp) + " °C"
-    div_rain.innerText = str(forecast.rain) + " mm"
+    div_temp.innerText = str(forecast.temperature_in_c) + " °C"
+    div_rain.innerText = str(forecast.rain_in_mm) + " mm"
     div_forecast.innerText = forecast.report_summary
 
     remove_class(div_weather, 'hidden')
 
 
-def create_error_style_report():
-    forecast = Report()
+def create_error_style_WeatherReport():
+    forecast = WeatherReport()
     forecast.sky = 'offline'
-    forecast.temp = 0
     forecast.report_summary = 'Weather API is offline.'
     return forecast
 
