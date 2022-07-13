@@ -3,19 +3,23 @@ from pathlib import Path
 
 import flask
 
-app = flask.Flask(__name__)
+from static.python.smhi import get_smhi_forecast_data
 
+app = flask.Flask(__name__)
 
 @app.get('/')
 def index():
     return flask.render_template('index.html')
 
-
 @app.get('/weather/data')
 def weather_data():
-    data = get_random_report()
+    data = get_smhi_forecast_data()
     return flask.jsonify(data)
 
+@app.get('/weather/data/<forecast_day>')
+def weather_data_weekday(forecast_day):
+    data = get_smhi_forecast_data(int(forecast_day))
+    return flask.jsonify(data)
 
 @app.get('/serviceWorker.js')
 def worker():
@@ -27,24 +31,3 @@ def worker():
 
     return resp
 
-
-def get_random_report() -> dict:
-    reports = [
-        {
-            'report': 'Clear and beautify skies today.',
-            'sky': 'sunny',
-            'temp': random.randint(65, 88),
-        },
-        {
-            'report': 'Cloudy and a bit cool today.',
-            'sky': 'cloudy',
-            'temp': random.randint(48, 60),
-        },
-        {
-            'report': 'Are those icicles falling from the sky? Get inside.',
-            'sky': 'rain',
-            'temp': random.randint(33, 40),
-        }
-    ]
-
-    return random.choice(reports)

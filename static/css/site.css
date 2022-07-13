@@ -72,8 +72,19 @@ body.offline {
     color: black;
 }
 
+#clock {
+    padding-top: 20px;
+    font-size: 250px;
+    font-weight: bold; 
+}
+
 #weather {
-    margin-top: 100px;
+    margin-top: 50px;
+}
+
+#weather #date {
+    font-size: 40px;
+    font-weight: bold;
 }
 
 #weather #image-container {
@@ -85,13 +96,18 @@ body.offline {
 }
 
 #weather #temp {
-    padding-top: 70px;
+    padding-top: 10px;
+    font-size: 100px;
+    font-weight: bold;
+}
+#weather #rain {
     font-size: 100px;
     font-weight: bold;
 }
 
 #weather #forecast {
-
+    padding-top: 10px;
+    font-size: 30px;
 }
 
 footer {
@@ -102,7 +118,7 @@ footer {
 }
 
 .footer-content {
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 
