@@ -164,3 +164,4 @@ unused-wheels/
 
 # New gitignores
 *.DS_store
+/static/cache
