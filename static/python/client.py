@@ -47,18 +47,18 @@ def set_span_weather(forecast_day: int):
     div_image = document.getElementById(f'image-small-{forecast_day}')
     div_temp = document.getElementById(f'temp-small-{forecast_day}')
     div_weather = document.getElementById(f'weather-small-{forecast_day}')
-    #div_date = document.getElementById(f'date-small-{forecast_day}')
-    #div_rain = document.getElementById(f'rain-small-{forecast_day}')
+    div_date = document.getElementById(f'date-small-{forecast_day}')
+    div_rain = document.getElementById(f'rain-small-{forecast_day}')
 
     add_class(div_weather, 'hidden')
     clear_body_colors(body)
 
     forecast = get_forecast(forecast_day)
     add_class(body, forecast.sky)
-    #div_date.innerText = forecast.date[:-17]
+    div_date.innerText = forecast.date[:-17]
     div_image.setAttribute('src', '/static/images/weather/{}.png'.format(forecast.sky))
     div_temp.innerText = str(forecast.temp) + " °C"
-    #div_rain.innerText = str(forecast.rain) + " mm"
+    div_rain.innerText = str(forecast.rain) + " mm"
     div_forecast.innerText = forecast.report_summary
 
     remove_class(div_weather, 'hidden')
@@ -69,8 +69,8 @@ def set_main_weather():
     div_image = document.getElementById('image')
     div_temp = document.getElementById('temp')
     div_weather = document.getElementById('weather')
-    #div_date = document.getElementById('date')
-    #div_rain = document.getElementById('rain')
+    div_date = document.getElementById('date')
+    div_rain = document.getElementById('rain')
 
     add_class(div_weather, 'hidden')
     clear_body_colors(body)
@@ -79,10 +79,10 @@ def set_main_weather():
 
     add_class(body, forecast.sky)
     # TODO: Figure out werid crash when i try to convert to date here
-    #div_date.innerText = forecast.date[:-12]
+    div_date.innerText = forecast.date[:-12]
     div_image.setAttribute('src', '/static/images/weather/{}.png'.format(forecast.sky))
     div_temp.innerText = str(forecast.temp) + " °C"
-    #div_rain.innerText = str(forecast.rain) + " mm"
+    div_rain.innerText = str(forecast.rain) + " mm"
     div_forecast.innerText = forecast.report_summary
 
     remove_class(div_weather, 'hidden')

@@ -1,6 +1,4 @@
-# pyscript PWA Example
-
-OLD README
+# pyscript PWA Example (Original readme)
 
 This app shows how using a PWA (Progressive Web App) along with [pyscript](https://pyscript.net)
 allows us to create Python-based web applications that install like regular applications and
@@ -26,3 +24,22 @@ google the actions if you are new to this in your browser.
 Unfortunately, Mozilla gave up on this feature for Firefox browser.
 
 If you have improvements for the PWA side of things, please open a PR. It's very bare-bones.
+
+# Smartmirror display
+
+This app has been exstened with the purpose to run on a smart mirror display. 
+
+## Current features
+- Display time
+- Weather app
+    - Color theame based on weather conditions
+    - Real time weather (From SMHI (Sveriges meteorologiska och hydrologiska institut))
+    - Caching weather data
+
+## Comming features
+- Weather app
+    - Position (Lon Lat) detection
+- Calendar app
+- Commute app (train/buss schedule)
+- Raspberry pi friendly runtime
+    - Some kind of on/off automation
