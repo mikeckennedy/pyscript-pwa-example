@@ -1,8 +1,8 @@
 
 # Local imports
-from static.python.weather_report import WeatherReport
-from static.python.provider import WeatherProviderProtocal, ForecastData
-from static.python.smhi import SHMIProvider
+from static.python.frontend.weather_report import WeatherReport
+from static.python.backend.provider import WeatherProviderProtocal, ForecastData
+from static.python.backend.smhi import SHMIProvider
 
 # Define specific weather provider detalis here
 request_url = 'https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/12.013/lat/57.656/data.json'
@@ -37,7 +37,7 @@ class WeatherBackendAPI:
             'sky': sky,
             'date': data.date,
             'rain_in_mm': round(data.rain_in_mm, 2),
-            'temperature_in_c': round(data.temperature_in_c, 0),
+            'temperature_in_c': int(data.temperature_in_c),
             'report_summary': self.get_report_phrase(sky),
         }
         return WeatherReport(**weather_report_data)

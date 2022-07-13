@@ -3,7 +3,7 @@ from pathlib import Path
 # Third party imports 
 import flask
 # Local imports 
-from static.python.weather_backend_api import WeatherBackendAPI
+from static.python.backend.weather_backend_api import WeatherBackendAPI
 
 app = flask.Flask(__name__)
 print('Before ws backend')

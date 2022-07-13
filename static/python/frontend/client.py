@@ -39,7 +39,7 @@ def get_forecast(forecast_day: int = 0):
         forecast: WeatherReport = weather_frontend_api.download_report(forecast_day)
     except Exception as x:
         console.log("Error calling weather API: {}".format(x))
-        forecast = create_error_style_WeatherReport()
+        forecast = create_error_style_report()
     return forecast
 
 def set_span_weather(forecast_day: int):
@@ -88,7 +88,7 @@ def set_main_weather():
     remove_class(div_weather, 'hidden')
 
 
-def create_error_style_WeatherReport():
+def create_error_style_report():
     forecast = WeatherReport()
     forecast.sky = 'offline'
     forecast.report_summary = 'Weather API is offline.'

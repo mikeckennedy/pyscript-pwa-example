@@ -3,7 +3,7 @@ import json
 import requests
 from datetime import datetime, timedelta
 # Local imports
-from static.python.provider import ForecastData
+from static.python.backend.provider import ForecastData
 
 # Lon lat for Molndal
 

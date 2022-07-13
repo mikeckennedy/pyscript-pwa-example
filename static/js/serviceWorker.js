@@ -6,8 +6,9 @@ const assets = [
     "/static/js/site.js",
     "/static/js/pwa-scaffold.js",
 
-    "/static/python/client.py",
-    "/static/python/weather_api.py",
+    "/static/python/frontend/client.py",
+    "/static/python/frontend/weather_api.py",
+    "/static/python/frontend/weather_report.py",
 
     "/static/pyscript/pyscript.css",
     "/static/pyscript/pyscript.js",
