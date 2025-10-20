@@ -161,7 +161,5 @@ cython_debug/
 
 unused-wheels/
 /.idea/workspace.xml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/inspectionProfiles/Project_Default.xml
+
+.idea/
